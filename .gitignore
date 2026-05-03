@@ -1,0 +1,48 @@
+# Garantir que o arquivo de estado do canvas seja versionado
+!.design-canvas.state.json
+# Node modules
+node_modules/
+
+# Build output
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+.pnpm/
+
+# Vite cache
+.vite/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+.env.*
+
+# Misc
+*.local
+*.log
+
+# OS generated files
+*.bak
+*.tmp
+
+# Coverage
+coverage/
+
+# Optional: ignore Mac resource forks
+._*

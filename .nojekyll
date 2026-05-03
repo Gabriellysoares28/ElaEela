@@ -1,0 +1,3 @@
+# GitHub Pages serves files as-is from root.
+# This empty .nojekyll file tells GitHub Pages to skip Jekyll processing,
+# so files/folders that start with underscore (_) are also served.

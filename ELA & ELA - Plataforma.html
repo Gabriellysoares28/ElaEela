@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>ELA & ELA — Plataforma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  html,body{margin:0;padding:0;background:#f0eee9;font-family:'Inter',sans-serif}
+  /* Hide scrollbars on artboard inner content cleanly */
+  .artboard-host{background:var(--paper);overflow:hidden}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="components/atoms.jsx"></script>
+<script type="text/babel" src="components/data.jsx"></script>
+<script type="text/babel" src="components/catalog.jsx"></script>
+<script type="text/babel" src="components/detail.jsx"></script>
+<script type="text/babel" src="components/timeline.jsx"></script>
+<script type="text/babel" src="components/partner-dashboard.jsx"></script>
+<script type="text/babel" src="components/partner-submit.jsx"></script>
+<script type="text/babel" src="components/home.jsx"></script>
+<script type="text/babel" src="components/mobile.jsx"></script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "density": 2,
+  "accent": "gold",
+  "showMobile": true
+}/*EDITMODE-END*/;
+
+function App() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  // Apply accent live
+  React.useEffect(() => {
+    const root = document.documentElement;
+    const accents = {
+      gold:    { gold: '#b08a52', gold2: '#8a6b3d', soft: '#d9c5a3' },
+      rose:    { gold: '#c08280', gold2: '#9a5a58', soft: '#e8c8c4' },
+      bronze:  { gold: '#9c6a4a', gold2: '#754a30', soft: '#d4b39a' },
+      ink:     { gold: '#3a4252', gold2: '#222833', soft: '#a8b0c0' },
+    };
+    const c = accents[tweaks.accent] || accents.gold;
+    root.style.setProperty('--gold', c.gold);
+    root.style.setProperty('--gold-2', c.gold2);
+    root.style.setProperty('--gold-soft', c.soft);
+  }, [tweaks.accent]);
+
+  return (
+    <>
+      <DesignCanvas>
+        <DCSection id="overview" title="ELA & ELA · Plataforma de locação colaborativa"
+          subtitle="Foco no modelo colaborativo · jornadas paralelas para parceira (que confia a peça) e cliente (que aluga). Estética: luxo editorial minimal, serifa display + sans neutra, dourado discreto. Use o painel Tweaks (canto inferior) para alternar densidade do catálogo e paleta de acento.">
+        </DCSection>
+
+        {/* HOME */}
+        <DCSection id="home" title="Home · porta de entrada da plataforma"
+          subtitle="Hero carrossel editorial com 3 campanhas (auto-play 6.5s), faixa de números, carrossel curatorial de vestidos da semana, carrossel horizontal por ocasião, e dois caminhos lado a lado (cliente x parceira).">
+          <DCArtboard id="home-desk" label="Home · desktop com hero carrossel + carrosséis curatoriais" width={1440} height={2900}>
+            <div className="artboard-host" style={{width:'100%',height:'100%',overflow:'auto'}}>
+              <HomeDesktop/>
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        {/* PARCEIRA — main flow */}
+        <DCSection id="parceira" title="Parceira · cadastrar e acompanhar peças"
+          subtitle="Fluxo principal — a parceira confia uma peça ao armário, vê em tempo real preço sugerido, comissão e projeção, e acompanha ganhos.">
+          <DCArtboard id="p-submit" label="Cadastro de peça · multi-step com pré-visualização ao vivo" width={1440} height={1100}>
+            <div className="artboard-host" style={{width:'100%',height:'100%',overflow:'auto'}}>
+              <PartnerSubmit/>
+            </div>
+          </DCArtboard>
+          <DCArtboard id="p-dash" label="Painel da parceira · ganhos, peças e repasses PIX" width={1440} height={1100}>
+            <div className="artboard-host" style={{width:'100%',height:'100%',overflow:'auto'}}>
+              <PartnerDashboard/>
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        {/* CLIENTE */}
+        <DCSection id="cliente" title="Cliente · descoberta, try-on virtual e cronograma"
+          subtitle="A peça da parceira aparece com o crédito dela em todo o catálogo. Try-on virtual, calendário visual de disponibilidade e cronograma da locação dão clareza editorial à experiência.">
+          <DCArtboard id="c-cat" label="Catálogo · curadoria editorial por ocasião" width={1440} height={1500}>
+            <div className="artboard-host" style={{width:'100%',height:'100%',overflow:'auto'}}>
+              <CatalogDesktop density={tweaks.density}/>
+            </div>
+          </DCArtboard>
+          <DCArtboard id="c-detail" label="Detalhe do vestido · try-on virtual + calendário" width={1440} height={1180}>
+            <div className="artboard-host" style={{width:'100%',height:'100%',overflow:'auto'}}>
+              <DetailDesktop/>
+            </div>
+          </DCArtboard>
+          <DCArtboard id="c-timeline" label="Cronograma da locação · pós-reserva" width={1440} height={1100}>
+            <div className="artboard-host" style={{width:'100%',height:'100%',overflow:'auto'}}>
+              <TimelineDesktop/>
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        {/* MOBILE */}
+        {tweaks.showMobile && (
+          <DCSection id="mobile" title="Mobile · jornadas-chave"
+            subtitle="As três telas mais usadas em mobile — onde a maior parte do tráfego acontece (descoberta, cadastro de peça, acompanhamento).">
+            <DCArtboard id="m-cat" label="Mobile · catálogo" width={460} height={920}>
+              <div className="artboard-host" style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <MobileCatalog/>
+              </div>
+            </DCArtboard>
+            <DCArtboard id="m-partner" label="Mobile · cadastro de peça" width={460} height={920}>
+              <div className="artboard-host" style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <MobilePartner/>
+              </div>
+            </DCArtboard>
+            <DCArtboard id="m-timeline" label="Mobile · cronograma" width={460} height={920}>
+              <div className="artboard-host" style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <MobileTimeline/>
+              </div>
+            </DCArtboard>
+          </DCSection>
+        )}
+      </DesignCanvas>
+
+      <TweaksPanel title="Tweaks · ELA & ELA">
+        <TweakSection title="Catálogo">
+          <TweakRadio label="Densidade do grid"
+            value={String(tweaks.density)}
+            onChange={v => setTweak('density', +v)}
+            options={[
+              { value: '2', label: '2 col · editorial' },
+              { value: '3', label: '3 col · padrão' },
+              { value: '4', label: '4 col · denso' },
+            ]} />
+        </TweakSection>
+        <TweakSection title="Acento">
+          <TweakRadio label="Cor de acento"
+            value={tweaks.accent}
+            onChange={v => setTweak('accent', v)}
+            options={[
+              { value: 'gold', label: 'Dourado' },
+              { value: 'rose', label: 'Rosé' },
+              { value: 'bronze', label: 'Bronze' },
+              { value: 'ink', label: 'Tinta fria' },
+            ]} />
+        </TweakSection>
+        <TweakSection title="Telas">
+          <TweakToggle label="Mostrar artboards mobile"
+            checked={tweaks.showMobile}
+            onChange={v => setTweak('showMobile', v)} />
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
